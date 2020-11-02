@@ -35,3 +35,7 @@ inputs:
     description: 'Set a default version bump to use'
     default: 'patch'
     required: false
+  force-bump:
+    description: 'Forces a version bump'
+    default: 'false'
+    required: false

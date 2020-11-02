@@ -20,10 +20,13 @@ Toolkit.run(async tools => {
 
   const commitMessage = 'version bump to'
   console.log('messages:', messages);
-  const isVersionBump = messages.map(message => message.toLowerCase().includes(commitMessage)).includes(true)
-  if (isVersionBump) {
-    tools.exit.success('No action necessary!')
-    return
+
+  if (!process.env['INPUT_FORCE-BUMP']) {
+    const isVersionBump = messages.map(message => message.toLowerCase().includes(commitMessage)).includes(true)
+    if (isVersionBump) {
+      tools.exit.success('No action necessary!')
+      return
+    }
   }
 
   const majorWords = process.env['INPUT_MAJOR-WORDING'].split(',')
@@ -33,7 +36,7 @@ Toolkit.run(async tools => {
 
   let version = process.env['INPUT_DEFAULT'] || 'patch'
   let foundWord = null;
-  
+
   if (messages.some(
     message => /^([a-zA-Z]+)(\(.+\))?(\!)\:/.test(message) || majorWords.some(word => message.includes(word)))) {
     version = 'major'
